@@ -19,11 +19,20 @@ public class Tournament {
 
     private List<Integer> getRandomList(int players) {
         Random randNum = new Random();
-        Set<Integer> set = new LinkedHashSet<Integer>();
+        Set<Integer> set = new LinkedHashSet<>();
         while (set.size() < players) {
             set.add(randNum.nextInt(players));
         }
         return set.stream().toList();
+    }
+
+    public boolean deletePlayer(String name){
+        if (players.contains(name)){
+            players = players.stream().filter(player -> !player.equals(name)).toList();
+            noPlayers = players.size();
+            return true;
+        }
+        return false;
     }
 
     //DEV METHODS
@@ -35,17 +44,19 @@ public class Tournament {
     public void printPlayers(){
         playersOrder = getPlayersOrder();
         int x = 0;
-        for (int i = 0; i < noPlayers/2; i++){
-            for (int z = 0; z < 2; z++){
-                String player = players.get(playersOrder.get(x));
-                if (!player.isBlank()){
-                    System.out.printf( player + "\n");
-                }else{
-                    System.out.println("eliminated");
+        if (noPlayers != 1) {
+            for (int i = 0; i < noPlayers / 2; i++) {
+                for (int z = 0; z < 2; z++) {
+                    String player = players.get(playersOrder.get(x));
+                    if (!player.isBlank()) {
+                        System.out.printf(player + "\n");
+                    }
+                    x++;
                 }
-                x++;
+                System.out.println();
             }
-            System.out.printf("\n");
+        } else {
+            System.out.println("Winner of tournament is: " + players.get(0));
         }
     }
 }
